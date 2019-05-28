@@ -1,69 +1,68 @@
+<!<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doc-Lab</title>
+  <link rel="stylesheet" href="static/main/images/style1.css">
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+</head>
+<body>
 <header>
-  <head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  </head>
-  <body>
     <nav class="navbar navbar-expand-sm bg-light">
-      <!------------------------- Logo ------------------------------------->
-      <a class="navbar-brand" href="#">
-        <img src="static\main\images\logo.png" alt="Logo" style="width:30px">
-      </a>
-      <!------------------------- Link------------------------------------->
         <ul class="navbar-nav mr-auto">
+          <div class="logo">
+            <a href ="index.html"><img class="graficlogo" src="static/main/images/logo.png">
+          </div>
+    <nav class="navbar navbar-expand-sm bg-light">
+        <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="navbar-brand nav-link text-success">
+                        {% if user.acc_type == 3 %}
+                            {{ user.pat_ref }}
+                        {% elif user.acc_type == 4 %}
+                            {{ user.doc_ref }}
+                        {% endif %}
+                        ({{ user.username }})
+                    </a>
+                </li>
+            {% endif %}
+
             <li class="nav-item">
-                <a class="navbar-brand" href="{% url 'main:index' %}">Main page</a>
+                <a class="nav-link" href="{% url 'main:index' %}">Main Page</a>
             </li>
-        <!------------------------- Dropdown ----------------------------------->
-            <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="{% url 'patient:index' %}" id="navbardrop" data-toggle="dropdown">
-                    Patient
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'doctor:schedule' 1 %}">Schedule</a>
-                  </div>
-            </li>
-            <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="{% url 'doctor:index' %}" id="navbardrop" data-toggle="dropdown">
-                    Doctor
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'doctor:patients'%}">Patients</a>
-                    <a class="dropdown-item" href="{% url 'doctor:create_patient' %}">Create patient</a>
-                    <a class="dropdown-item" href="{% url 'doctor:schedule' 1%}">Schedule</a>
-                    <a class="dropdown-item" href="{% url 'doctor:userform' %}">Create usser account</a>
-                  </div>
-            </li>
-            <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="{% url 'lab:index' %}" id="navbardrop" data-toggle="dropdown">
-                    Laboratory
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'lab:medtests'%}">Finished tests</a>
-                    <a class="dropdown-item" href="{% url 'lab:medtests_todo' %}">Tests to do</a>
-                  </div>
-            </li>
-    <!------------------------- Link------------------------------------->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'main:info' %}">Information</a>
+                <a class="nav-link" href="{% url 'main:info' %}">About</a>
             </li>
 
             {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-            </li>
-    {% else %}
-            <li class="nav-item">
-                <a class="nav-link mr-auto" href="{% url 'login' %}">Login</a>
-            </li>
-    {% endif %}
-        </ul>
+                {% if user.acc_type == 1 %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'doctor:index' %}">Doctor Panel</a>
+                    </li>
+                {% elif user.acc_type == 2 %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lab:index' %}">Lab Tests Panel</a>
+                    </li>
+                {% elif user.acc_type == 3 %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'patient:index' %}">Actions</a>
+                    </li>
+                {% endif %}
+            {% endif %}
 
+
+            {% if user.is_authenticated %}
+                <li class="nav-item mr-auto">
+                    <a class="nav-link " href="{% url 'logout' %}">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item mr-auto">
+                    <a class="nav-link mr-auto" href="{% url 'login' %}">Login</a>
+                </li>
+            {% endif %}
+        </ul>
     </nav>
-  </body>
 </header>
+</body>
+</html>
